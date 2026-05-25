@@ -170,7 +170,7 @@ def rings():
         media_nota = nota/contador
         rings_tratados.append({"nome":ring[1],"nota_media":media_nota,"id":ring[0]})
 
-    
+    rings_tratados.sort(key=lambda x: x['nota'], reverse=True)
     
     print(rings_tratados)
     return render_template('rings.html', lista_rings=rings_tratados)
