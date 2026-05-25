@@ -1,0 +1,71 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="rings-container">
+    
+    <div style="margin-bottom: 15px; padding: 0 5px;">
+        <h2 style="font-size: 1.5rem; color: var(--texto-escuro);">Equipamentos Rings</h2>
+        <p style="color: var(--texto-mutado); font-size: 0.85rem;">Ordenados pela maior nota média de avaliação</p>
+    </div>
+
+    <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="inputPesquisa" onkeyup="filtrarRings()" placeholder="Pesquisar por nome ou código...">
+    </div>
+
+    <div class="scroll-lista" id="listaRings">
+        
+        {% for ring in lista_rings %}
+        <a href="{{ url_for('detalhes_ring', id_do_ring=ring.id) }}" class="ring-link" style="text-decoration: none; color: inherit; ";>
+        <div class="card ring-item" style="padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 class="ring-nome" style="font-size: 1.1rem; color: var(--texto-escuro); margin-bottom: 4px;">{{ ring.nome }}</h3>
+            </div>
+            
+            <div style="text-align: right;">
+                <span class="badge-nota" style="background-color: {% if ring.nota_media >= 7 %}rgba(16, 185, 129, 0.15){% else %}rgba(239, 68, 68, 0.15){% endif %}; color: {% if ring.nota_media >= 7 %}var(--sucesso){% else %}#ef4444{% endif %}; padding: 6px 12px; border-radius: 20px; font-weight: 700; font-size: 1rem;">
+                    <i class="fa-solid fa-star" style="font-size: 0.85rem; margin-right: 4px;"></i>{{ "%.1f"|format(ring.nota_media) }}
+                </span>
+            </div>
+        </div>
+    </a>
+        {% else %}
+        <div style="text-align: center; padding: 40px 20px; color: var(--texto-mutado);">
+            <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+            <p>Nenhum equipamento Rings cadastrado.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <a href="{{ url_for('nova_avaliacao') }}" class="btn-flutuante" title="Adicionar Nova Avaliação">
+        <i class="fa-solid fa-plus"></i>
+    </a>
+
+</div>
+
+<script>
+function filtrarRings() {
+    let input = document.getElementById('inputPesquisa');
+    let filter = input.value.toLowerCase();
+    let lista = document.getElementById('listaRings');
+    let links = lista.getElementsByClassName('ring-link');
+
+    for (let i = 0; i < links.length; i++) {
+        let nomeElemento = links[i].querySelector('.ring-nome');
+        
+        if (nomeElemento) {
+            let txtValue = nomeElemento.textContent || nomeElemento.innerText;
+            
+            if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                // CORREÇÃO: String vazia remove o 'none' e faz o card voltar ao seu visual original perfeito
+                links[i].style.display = ""; 
+            } else {
+                links[i].style.display = "none";
+                
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

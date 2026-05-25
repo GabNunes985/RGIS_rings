@@ -1,0 +1,39 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="card" style="margin-top: 10vh;">
+    <!-- Cabeçalho do Login -->
+    <div style="text-align: center; margin-bottom: 25px;">
+        <i class="fa-solid fa-lock" style="font-size: 2.5rem; color: var(--cor-primaria); margin-bottom: 10px;"></i>
+        <h2 style="font-size: 1.6rem; color: var(--texto-escuro);">Acessar Sistema</h2>
+        <p style="color: var(--texto-mutado); font-size: 0.9rem; margin-top: 4px;">Insira suas credenciais para avaliar os equipamentos</p>
+    </div>
+
+    <!-- Formulário de Login -->
+    <!-- Substitua 'login_process' pela rota correspondente no seu Python futuramente -->
+    <form method="POST" action="#">
+        
+        <!-- Campo de Usuário / Matrícula -->
+        <div class="form-group">
+            <label for="usuario">Badge</label>
+            <input type="text" id="usuario" name="usuario" placeholder="Digite seu badge" required autocomplete="username">
+        </div>
+
+        <!-- Campo de Senha -->
+        <div class="form-group" style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label for="senha" style="margin-bottom: 0;">Senha</label>
+                <!-- Link discreto caso queira implementar recuperação de senha depois -->
+            </div>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required autocomplete="current-password">
+        </div>
+
+        <!-- Botão de Entrar -->
+        <button type="submit">
+            <i class="fa-solid fa-right-to-bracket"></i> Entrar no Sistema
+        </button>
+    </form>
+</div>
+
+
+{% endblock %}

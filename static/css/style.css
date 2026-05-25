@@ -1,0 +1,287 @@
+/* ==========================================================================
+   VARIÁVEIS DE CORES E CONFIGURAÇÕES
+   ========================================================================== */
+:root {
+    --bg-principal: #f8f9fa;
+    --bg-card: #ffffff;
+    --cor-primaria: #2563eb;       /* Azul Moderno */
+    --cor-primaria-hover: #1d4ed8;
+    --texto-escuro: #1e293b;       /* Grafite para leitura */
+    --texto-mutado: #64748b;       /* Cinza para placeholders/subtítulos */
+    --borda: #e2e8f0;
+    --input-bg: #f1f5f9;
+    --sucesso: #10b981;
+    --sombra: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    --radius: 12px;                /* Cantos arredondados modernos */
+}
+
+/* ==========================================================================
+   RESET E CONFIGURAÇÃO MOBILE
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar no celular */
+}
+
+body {
+    background-color: var(--bg-principal);
+    color: var(--texto-escuro);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 60px;     /* Espaço para o header fixo */
+    padding-bottom: 70px;  /* Espaço para o footer fixo */
+}
+
+/* ==========================================================================
+   HEADER & FOOTER (ESTILO APLICATIVO)
+   ========================================================================== */
+.app-header {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--borda);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 600px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.app-logo {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--cor-primaria);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link {
+    color: var(--texto-mutado);
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.app-footer {
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--borda);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    z-index: 1000;
+}
+
+.footer-nav {
+    max-width: 600px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--texto-mutado);
+    text-decoration: none;
+    font-size: 0.75rem;
+    gap: 4px;
+    transition: color 0.2s;
+}
+
+.footer-link i {
+    font-size: 1.25rem;
+}
+
+.footer-link.active {
+    color: var(--cor-primaria);
+}
+
+/* ==========================================================================
+   CONTAINER DO CONTEÚDO (MÁXIMO DE LARGURA PARA SIMULAR CELULAR NO PC)
+   ========================================================================== */
+.main-content {
+    flex: 1;
+    width: 100%;
+    max-width: 600px; /* Evita que o app estique demais se abrir no computador */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DE FORMULÁRIOS, BOTÕES E CARDS
+   ========================================================================== */
+/* Card para envelopar o formulário ou resultados */
+.card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--sombra);
+    margin-bottom: 20px;
+    border: 1px solid var(--borda);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--texto-escuro);
+}
+
+/* Inputs robustos, fáceis de clicar no touch screen */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    background-color: var(--input-bg);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    color: var(--texto-escuro);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--cor-primaria);
+    background-color: var(--bg-card);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Botão estilo mobile (largo e destacado) */
+button[type="submit"], .btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: var(--cor-primaria);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+button[type="submit"]:hover, .btn:hover {
+    background-color: var(--cor-primaria-hover);
+}
+
+button[type="submit"]:active, .btn:active {
+    transform: scale(0.98); /* Efeito sutil de clique físico */
+}
+
+/* Elementos de Feedback (como o H1 de resultado que você fez) */
+.resultado-box {
+    background-color: rgba(37, 99, 235, 0.08);
+    border-left: 4px solid var(--cor-primaria);
+    padding: 16px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-top: 20px;
+}
+
+.resultado-box h1 {
+    font-size: 1.2rem;
+    color: var(--cor-primaria-hover);
+    word-break: break-all;
+}
+
+/* Container da barra de pesquisa */
+.search-box {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    padding-left: 45px !important; /* Abre espaço para o ícone da lupa */
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texto-mutado);
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+/* Área de scroll para celulares antigos ou listas gigantes */
+.scroll-lista {
+    max-height: calc(100vh - 230px); /* Ajusta dinamicamente a altura máxima */
+    overflow-y: auto;                /* Ativa o scroll vertical */
+    padding-right: 4px;
+}
+
+/* Esconde a barra de scroll padrão para ficar com cara de app nativo */
+.scroll-lista::-webkit-scrollbar {
+    width: 4px;
+}
+.scroll-lista::-webkit-scrollbar-thumb {
+    background-color: var(--borda);
+    border-radius: 4px;
+}
+
+/* Estilo do Botão Flutuante (FAB) */
+.btn-flutuante {
+    position: fixed;
+    bottom: 85px; /* Fica logo acima da sua barra de navegação inferior */
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background-color: var(--cor-primaria);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    z-index: 999;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-flutuante:active {
+    transform: scale(0.9);
+}
+
+
+/* Efeito visual de clique para os cards de Rings */
+.ring-link:active .card {
+    background-color: #f1f5f9; /* Escurece o fundo de leve ao tocar */
+    transform: scale(0.99);    /* Dá um efeito físico de afundar de leve */
+}
+
+/* Coloque logo no início do arquivo junto com o reset (*) */
+a {
+    text-decoration: none; /* Remove o underline de TODOS os links */
+}

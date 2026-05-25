@@ -1,0 +1,44 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div style="margin-bottom: 25px; padding: 0 5px;">
+    <h2 style="font-size: 1.5rem; color: var(--texto-escuro);">Painel de Avaliação</h2>
+    <p style="color: var(--texto-mutado); font-size: 0.9rem;">Selecione o setor ou tipo de equipamento para iniciar:</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+
+    <a href="{{url_for('rings')}}" style="text-decoration: none; color: inherit;">
+        <div class="card" style="margin-bottom: 0; padding: 20px; display: flex; align-items: center; gap: 20px; transition: transform 0.2s;">
+            <div style="background-color: rgba(37, 99, 235, 0.1); width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--cor-primaria); font-size: 1.5rem;">
+                <i class="fa-solid fa-circle-dot"></i>
+            </div>
+            <div style="flex: 1;">
+                <h3 style="font-size: 1.2rem; color: var(--texto-escuro); margin-bottom: 4px;">Rings</h3>
+                <p style="color: var(--texto-mutado); font-size: 0.85rem;">Avaliação e vistoria de equipamentos Rings</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--texto-mutado);"></i>
+        </div>
+    </a>
+
+    <a href="#" style="text-decoration: none; color: inherit;">
+        <div class="card" style="margin-bottom: 0; padding: 20px; display: flex; align-items: center; gap: 20px; transition: transform 0.2s;">
+            <div style="background-color: rgba(16, 185, 129, 0.1); width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--sucesso); font-size: 1.5rem;">
+                <i class="fa-solid fa-industry"></i>
+            </div>
+            <div style="flex: 1;">
+                <h3 style="font-size: 1.2rem; color: var(--texto-escuro); margin-bottom: 4px;">Nissei</h3>
+                <p style="color: var(--texto-mutado); font-size: 0.85rem;">Nissei</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--texto-mutado);"></i>
+        </div>
+    </a>
+
+</div>
+
+{% if resultado %}
+    <div class="resultado-box" style="margin-top: 25px;">
+        <h1>{{ resultado }}</h1>
+    </div>
+{% endif %}
+{% endblock %}

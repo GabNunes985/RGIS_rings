@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysAvalia - Equipamentos</title>
+    <!-- Link para o CSS que está na pasta static -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Ícones simples via FontAwesome (opcional, mas deixa o visual excelente) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header Fixo no Topo -->
+    <header class="app-header">
+        <div class="header-container">
+
+            {%if session.get('usuario')%}
+            
+                <a href="{{url_for('home')}}" class="app-logo"><i class="fa-solid fa-screwdriver-wrench"></i> SysAvalia</a>
+                <!-- Um botão de logout discreto que você pode controlar depois -->
+                <span>{{session.get('usuario')}} </span>
+                <nav class="header-nav">
+                    <a href="{{url_for('logout')}}" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i></a>
+                </nav>
+
+                
+            {%else%}
+                <span class="app-logo"><i class="fa-solid fa-screwdriver-wrench"></i> SysAvalia</span>
+                <!-- Um botão de logout discreto que você pode controlar depois -->
+            
+            {%endif%}
+
+
+        </div>
+    </header>
+
+    <!-- Conteúdo Dinâmico (Onde entra o seu index.html, login, etc) -->
+    <main class="main-content">
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+
+    <!-- Rodapé/Navegação Inferior (Estilo App de Celular) -->
+    <footer class="app-footer">
+        <nav class="footer-nav">
+            <a href="/home" class="footer-link active">
+                <i class="fa-solid fa-house"></i>
+                <span>Início</span>
+            </a>
+            <a href="#" class="footer-link">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Histórico</span>
+            </a>
+            <a href="#" class="footer-link">
+                <i class="fa-solid fa-user"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </footer>
+
+</body>
+</html>
