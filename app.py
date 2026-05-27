@@ -9,62 +9,17 @@ from mysql.connector import Error
 
 app = Flask(__name__)
 
+def cnn():
 
-
-cnx = mysql.connector.connect(
-    user= "root",
-    password= "gYAhvOFskdkEVGSgnjteTCFtBcRVTnkI",
-    host= "kodama.proxy.rlwy.net",
-    port= 50348,
-    database= "railway",
-    
-)
-
-cursor = cnx.cursor()
-
-query = "SHOW TABLES LIKE 'users'"
-
-cursor.execute(query)
-
-if not cursor.fetchone():
-    query = """
-    CREATE TABLE users(
-        id SERIAL PRIMARY KEY,
-        nome VARCHAR(100),
-        senha VARCHAR (4),
-        badge VARCHAR (8)
-    )
-    """
-    cursor.execute(query)
-    query = """
-    CREATE TABLE rings(
-        id SERIAL PRIMARY KEY,
-        numero VARCHAR(3)
-    )
-    """
-    cursor.execute(query)
-    query = """
-        CREATE TABLE IF NOT EXISTS avaliacoes(
-        id SERIAL PRIMARY KEY,
-        users_id BIGINT UNSIGNED,
-        rings_id BIGINT UNSIGNED,
-        nota INT CHECK (nota BETWEEN 1 AND 10),
-        comentario TEXT,
-        data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    cnx = mysql.connector.connect(
+        user= "root",
+        password= "gYAhvOFskdkEVGSgnjteTCFtBcRVTnkI",
+        host= "kodama.proxy.rlwy.net",
+        port= 50348,
+        database= "railway",
         
-        FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
-        FOREIGN KEY (rings_id) REFERENCES rings(id) ON DELETE CASCADE,
-        UNIQUE(users_id, rings_id)
     )
-    """
-    cursor.execute(query)
-    cnx.commit()
-    cursor.close()
-    cnx.close()
-    #INSERT INTO users (nome,senha,badge) 
-    #VALUES ('Gab', '0534', '91800354')
-    
-
+    return cnx
 app.secret_key = 'uma_chave_secreta_e_muito_segura_aqui'
 
 def login_required(f):
@@ -80,9 +35,14 @@ def login_required(f):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     
-    cursor.execute("SELECT nome, senha, badge ,id FROM users")
-        
+    cnx = cnn()
+    cursor = cnx.cursor()
+
+
+    cursor.execute("SELECT nome,senha,badge,id FROM users")
+            
     users = cursor.fetchall()
+    
     
     if request.method == 'POST':
         usuario = request.form.get('usuario')
@@ -101,11 +61,16 @@ def login():
                 session['usuario'] = user
                 session['user_id'] = id
                 print(id)
+                cnx.close()
+                cursor.close()
+                
                 return redirect(url_for('home'))
-        else:
-                # Se errar, você pode passar uma mensagem de erro para o HTML
-                return render_template('login.html', erro="Usuário ou senha incorretos")
-            
+        
+        cnx.close()
+        cursor.close()
+        # Se errar, você pode passar uma mensagem de erro para o HTML
+        return render_template('login.html', erro="Usuário ou senha incorretos")
+        
     return render_template('login.html')
 
 @app.route('/logout')
@@ -143,8 +108,8 @@ def rings():
     # cursor = conn.cursor(dictionary=True)
     
     # IMPORTANTE: O 'ORDER BY nota_media DESC' traz as maiores notas primeiro!
-    
-    
+    cnx = cnn()
+    cursor = cnx.cursor()
     array = [5,1,7,8,9,10,'texto',3.5]
     
     
@@ -173,6 +138,9 @@ def rings():
     rings_tratados.sort(key=lambda x: x['nota_media'], reverse=True)
     
     print(rings_tratados)
+    cnx.close()
+    cursor.close()
+    
     return render_template('rings.html', lista_rings=rings_tratados)
 
 
@@ -181,8 +149,10 @@ def rings():
 @login_required
 def nova_avaliacao():
     if request.method == 'POST':
+        
+        cnx = cnn()
         cursor = cnx.cursor()
-
+        
         # Pega os dados do formulário HTML
         ring = request.form.get('ring_n')
         nota = request.form.get('nota')
@@ -235,13 +205,7 @@ def nova_avaliacao():
             if i[1] == ring:
                 ring = i[0]
                 break
-        
-       
-       
-       
-       
-       
-       
+            
         
         values = (users_id, ring, nota, comentario)
         print(values)
@@ -257,14 +221,20 @@ def nova_avaliacao():
         
         
         if values:
+            cnx.close()
+            cursor.close()
             return redirect(url_for('rings'))
         else:
+            cnx.close()
+            cursor.close()
             return "Erro ao salvar. Talvez você já tenha avaliado esse Ring."
-
+    
     return render_template('avaliacao.html')
 
 @app.route('/rings/<int:id_do_ring>')
 def detalhes_ring(id_do_ring):
+    
+    cnx = cnn()
     
     cursor = cnx.cursor()
     
@@ -305,7 +275,8 @@ def detalhes_ring(id_do_ring):
     print(avaliacoes)
     
     ring_atual = ring_atual[0]
-    
+    cnx.close()
+    cursor.close()
     # Envia o Ring e a lista de avaliações dele para o HTML
     return render_template('detalhes_ring.html', ring=ring_atual, avaliacoes=avaliacoes)
 
