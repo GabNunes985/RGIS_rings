@@ -1,0 +1,55 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="historico-container" style="margin-bottom: 40px;">
+    
+    <div style="margin-bottom: 20px; padding: 0 5px;">
+        <h2 style="font-size: 1.5rem; color: var(--texto-escuro);">Meu Histórico</h2>
+        <p style="color: var(--texto-mutado); font-size: 0.85rem;">Todas as suas avaliações realizadas</p>
+    </div>
+
+    <div class="historico-lista">
+        {% for avaliacao in avaliacoes %}
+        <div class="card" style="padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--cor-primaria);">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                    <span style="font-weight: 700; color: var(--texto-escuro); font-size: 1.1rem;">
+                        Ring {{ avaliacao.numero_ring }}
+                    </span>
+                </div>
+                
+                <div style="display: flex; gap: 14px; font-size: 1.1rem;">
+                    <a href="{{ url_for('editar_avaliacao', id_avaliacao=avaliacao.id) }}" style="color: var(--cor-primaria);" title="Editar Avaliação">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a href="{{ url_for('deletar_avaliacao', id_avaliacao=avaliacao.id) }}" style="color: #ef4444;" title="Excluir Avaliação" onclick="return confirm('Tem certeza que deseja apagar esta avaliação?');">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+                <span style="background-color: rgba(234, 179, 8, 0.1); color: #eab308; padding: 4px 8px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; display: inline-block; margin-bottom: 8px;">
+                    <i class="fa-solid fa-star" style="margin-right: 3px;"></i>Nota: {{ avaliacao.nota }}
+                </span>
+                <p style="color: #334155; font-size: 0.9rem; line-height: 1.4; margin: 0;">
+                    {{ avaliacao.comentario if avaliacao.comentario else "<em>Sem observações registradas.</em>"|safe }}
+                </p>
+            </div>
+
+            <span style="display: block; text-align: right; color: var(--texto-mutado); font-size: 0.75rem;">
+                Avaliado em: {{ avaliacao.data_formatada }}
+            </span>
+
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 50px 20px; color: var(--texto-mutado);">
+            <i class="fa-solid fa-clipboard-list" style="font-size: 2.5rem; margin-bottom: 12px;"></i>
+            <p style="font-size: 0.95rem;">Você ainda não realizou nenhuma avaliação.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

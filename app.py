@@ -22,6 +22,18 @@ def cnn():
     return cnx
 app.secret_key = 'uma_chave_secreta_e_muito_segura_aqui'
 
+
+
+
+
+
+
+
+
+
+
+
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -72,6 +84,18 @@ def login():
         return render_template('login.html', erro="Usuário ou senha incorretos")
         
     return render_template('login.html')
+
+
+
+
+
+
+
+@app.route('/')
+@login_required
+def index():
+    return redirect(url_for('home'))
+
 
 @app.route('/logout')
 def logout():
@@ -281,7 +305,100 @@ def detalhes_ring(id_do_ring):
     return render_template('detalhes_ring.html', ring=ring_atual, avaliacoes=avaliacoes)
 
 
+# -------------------------------------------------------------
+# ROTA 1: EXIBIR O HISTÓRICO DO USUÁRIO LOGADO
+# -------------------------------------------------------------
+@app.route('/meu-historico')
+def meu_historico():
+    users_id = session.get('user_id') # Pega o ID de quem está logado
+    
+    conn = cnn()
+    cursor = conn.cursor(dictionary=True)
+    
+    # Busca apenas as avaliações do usuário logado fazendo JOIN com rings para saber o número do equipamento
+    query = """
+        SELECT 
+            avaliacoes.id,
+            avaliacoes.nota,
+            avaliacoes.comentario,
+            DATE_FORMAT(avaliacoes.data_avaliacao, '%d/%m/%Y') as data_formatada,
+            rings.numero AS numero_ring
+        FROM avaliacoes
+        INNER JOIN rings ON avaliacoes.rings_id = rings.id
+        WHERE avaliacoes.users_id = %s
+        ORDER BY avaliacoes.data_avaliacao DESC
+    """
+    cursor.execute(query, (users_id,))
+    minhas_avaliacoes = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    return render_template('meu_historico.html', avaliacoes=minhas_avaliacoes)
 
+
+# -------------------------------------------------------------
+# ROTA 2: DELETAR UMA AVALIAÇÃO
+# -------------------------------------------------------------
+@app.route('/avaliacao/deletar/<int:id_avaliacao>')
+def deletar_avaliacao(id_avaliacao):
+    users_id = session.get('user_id')
+    
+    conn = cnn()
+    cursor = conn.cursor()
+    
+    # O 'AND users_id = %s' garante que o usuário só consiga deletar as avaliações DELE MESMO
+    query = "DELETE FROM avaliacoes WHERE id = %s AND users_id = %s"
+    cursor.execute(query, (id_avaliacao, users_id))
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    return redirect(url_for('meu_historico'))
+
+
+# -------------------------------------------------------------
+# ROTA 3: EDITAR UMA AVALIAÇÃO (GET para abrir a tela, POST para salvar)
+# -------------------------------------------------------------
+@app.route('/avaliacao/editar/<int:id_avaliacao>', methods=['GET', 'POST'])
+def editar_avaliacao(id_avaliacao):
+    users_id = session.get('user_id')
+    
+    conn = cnn()
+    cursor = conn.cursor(dictionary=True)
+    
+    if request.method == 'POST':
+        # Recebe os dados atualizados do formulário
+        nova_nota = request.form.get('nota')
+        novo_comentario = request.form.get('comentario')
+        
+        query_update = """
+            UPDATE avaliacoes 
+            SET nota = %s, comentario = %s 
+            WHERE id = %s AND users_id = %s
+        """
+        cursor.execute(query_update, (nova_nota, novo_comentario, id_avaliacao, users_id))
+        conn.commit()
+        
+        cursor.close()
+        conn.close()
+        return redirect(url_for('meu_historico'))
+        
+    # Se for GET, busca os dados atuais da avaliação para preencher a tela de edição
+    query_busca = """
+        SELECT avaliacoes.*, rings.numero AS numero_ring 
+        FROM avaliacoes 
+        INNER JOIN rings ON avaliacoes.rings_id = rings.id
+        WHERE avaliacoes.id = %s AND avaliacoes.users_id = %s
+    """
+    cursor.execute(query_busca, (id_avaliacao, users_id))
+    avaliacao_atual = cursor.fetchone()
+    
+    cursor.close()
+    conn.close()
+    
+    # Aqui você pode reaproveitar a sua estrutura de formulário (add_avaliacao) adaptando os campos!
+    return render_template('edit_avaliacao.html', avaliacao=avaliacao_atual)
 
 
 if __name__ == '__main__':
@@ -291,4 +408,3 @@ if __name__ == '__main__':
                                      
     
     
-

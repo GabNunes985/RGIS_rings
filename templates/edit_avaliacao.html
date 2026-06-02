@@ -1,0 +1,46 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="card" style="margin-top: 10px; margin-bottom: 30px;">
+    
+    <div style="margin-bottom: 25px; padding: 0 5px;">
+        <h2 style="font-size: 1.5rem; color: var(--texto-escuro);">Editar Avaliação</h2>
+        <p style="color: var(--texto-mutado); font-size: 0.85rem;">Modifique as informações gravadas abaixo</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('editar_avaliacao', id_avaliacao=avaliacao.id) }}">
+        
+        <div class="form-group">
+            <label for="numero_ring">Equipamento</label>
+            <div style="position: relative; display: flex; align-items: center;">
+                <input type="text" id="numero_ring" value="Ring {{ avaliacao.numero_ring }}" disabled style="background-color: #f1f5f9; color: var(--texto-mutado); cursor: not-allowed; padding-left: 40px; font-weight: 600;">
+                <i class="fa-solid fa-lock" style="position: absolute; left: 15px; color: var(--texto-mutado); font-size: 1rem;"></i>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nota">Nota do Equipamento (1 a 10)</label>
+            <div style="position: relative; display: flex; align-items: center;">
+                <input type="number" id="nota" name="nota" value="{{ avaliacao.nota }}" required min="1" max="10" style="padding-left: 40px;">
+                <i class="fa-solid fa-star" style="position: absolute; left: 15px; color: #eab308; font-size: 1.1rem;"></i>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label for="comentario">Comentários / Observações</label>
+            <textarea id="comentario" name="comentario" rows="4" placeholder="Descreva as condições atuais do ring..." style="width: 100%; padding: 12px; border: 1px solid var(--borda); border-radius: 8px; font-family: inherit; font-size: 0.95rem; resize: none; outline: none; box-sizing: border-box;">{{ avaliacao.comentario if avaliacao.comentario else '' }}</textarea>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+            <a href="{{ url_for('meu_historico') }}" style="flex: 1; text-align: center; padding: 14px; border: 1px solid var(--borda); border-radius: 8px; color: var(--texto-escuro); font-weight: 600; text-decoration: none; font-size: 0.95rem; background-color: #f8fafc;">
+                Cancelar
+            </a>
+            
+            <button type="submit" style="flex: 2; margin-top: 0; background-color: var(--cor-primaria);">
+                <i class="fa-solid fa-check" style="margin-right: 6px;"></i> Atualizar
+            </button>
+        </div>
+
+    </form>
+</div>
+{% endblock %}
