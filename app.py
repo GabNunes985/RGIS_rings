@@ -155,10 +155,12 @@ def rings():
             
             nota += item[0]
             contador+=1
-        if contador =! 0:
-             media_nota = nota/contador
+
+        if contador == 0:
+         media_nota = 0
         else:
-            media_nota = 0
+         media_nota = nota/contador
+        
         rings_tratados.append({"nome":ring[1],"nota_media":media_nota,"id":ring[0]})
 
     rings_tratados.sort(key=lambda x: x['nota_media'], reverse=True)
