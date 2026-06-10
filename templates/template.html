@@ -44,15 +44,15 @@
     <!-- Rodapé/Navegação Inferior (Estilo App de Celular) -->
     <footer class="app-footer">
         <nav class="footer-nav">
-            <a href="/home" class="footer-link active">
+            <a href="/home" class="footer-link {% if pagina_atual == 'home' %}active{% endif %}">
                 <i class="fa-solid fa-house"></i>
                 <span>Início</span>
             </a>
-            <a href="/meu-historico" class="footer-link">
+            <a href="/meu-historico" class="footer-link {% if pagina_atual == 'historico' %}active{% endif %}">
                 <i class="fa-solid fa-clipboard-list"></i>
                 <span>Histórico</span>
             </a>
-            <a href="#" class="footer-link">
+            <a href="#" class="footer-link {% if pagina_atual == 'perfil' %}active{% endif %}">
                 <i class="fa-solid fa-user"></i>
                 <span>Perfil</span>
             </a>

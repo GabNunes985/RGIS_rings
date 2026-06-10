@@ -110,7 +110,7 @@ def logout():
 @login_required
 def home():
 
-    return render_template('index.html',resultado = '')
+    return render_template('index.html',resultado = '',pagina_atual='home')
 
 
 
@@ -340,7 +340,7 @@ def meu_historico():
     
     cursor.close()
     conn.close()
-    return render_template('meu_historico.html', avaliacoes=minhas_avaliacoes)
+    return render_template('meu_historico.html', avaliacoes=minhas_avaliacoes,pagina_atual='historico')
 
 
 # -------------------------------------------------------------
