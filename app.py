@@ -1,3 +1,6 @@
+
+
+
 from flask import Flask, render_template, request, redirect, url_for, session
 from functools import wraps
 import os
@@ -241,8 +244,12 @@ def nova_avaliacao():
         except:
             cnx.close()
             cursor.close()
-            return('<script>alert("Você ja avaliou esse ring!!")</script>')
-        
+            return '''
+                <script>
+                    alert("Você já avaliou esse ring!!");
+                    window.location.href = document.referrer; // Faz o navegador voltar para a página de onde o usuário veio
+                </script>
+                '''
         
         if values:
             cnx.close()
