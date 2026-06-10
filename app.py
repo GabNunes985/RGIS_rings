@@ -1,6 +1,3 @@
-
-
-
 from flask import Flask, render_template, request, redirect, url_for, session
 from functools import wraps
 import os
@@ -125,18 +122,11 @@ def data_receiver():
 
 
 @app.route('/rings')
-@login_required # Lembra de proteger a rota
+@login_required 
 def rings():
-    # Exemplo usando mysql.connector:
-    # conn = obter_conexao()
-    # cursor = conn.cursor(dictionary=True)
     
-    # IMPORTANTE: O 'ORDER BY nota_media DESC' traz as maiores notas primeiro!
     cnx = cnn()
     cursor = cnx.cursor()
-    array = [5,1,7,8,9,10,'texto',3.5]
-    
-    
     
     query = f"SELECT id, numero from rings;"
     cursor.execute(query)
@@ -243,9 +233,15 @@ def nova_avaliacao():
                 VALUES (%s , %s, %s, %s)
                 """
         
-        cursor.execute(query,values)
-        cnx.commit()
-        cursor.close()
+        try:
+            
+            cursor.execute(query,values)
+            cnx.commit()
+            
+        except:
+            cnx.close()
+            cursor.close()
+            return('<script>alert("Você ja avaliou esse ring!!")</script>')
         
         
         if values:
