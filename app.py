@@ -316,6 +316,7 @@ def detalhes_ring(id_do_ring):
 # ROTA 1: EXIBIR O HISTÓRICO DO USUÁRIO LOGADO
 # -------------------------------------------------------------
 @app.route('/meu-historico')
+@login_required
 def meu_historico():
     users_id = session.get('user_id') # Pega o ID de quem está logado
     
@@ -347,6 +348,7 @@ def meu_historico():
 # ROTA 2: DELETAR UMA AVALIAÇÃO
 # -------------------------------------------------------------
 @app.route('/avaliacao/deletar/<int:id_avaliacao>')
+@login_required
 def deletar_avaliacao(id_avaliacao):
     users_id = session.get('user_id')
     
