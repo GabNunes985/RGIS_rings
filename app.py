@@ -46,7 +46,9 @@ def login_required(f):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    
+    if 'usuario' in session:
+            # Se não estiver logado, redireciona para a rota da função 'login'
+            return redirect(url_for('home'))
     cnx = cnn()
     cursor = cnx.cursor()
 
